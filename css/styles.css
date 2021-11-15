@@ -7,8 +7,8 @@ body {
     padding: 0;
     height: 100vh;
     font-family: sans-serif;
-    background: url("../img/bg.jpg") no-repeat;
-    background-size: cover;
+    background: rgb(16,56,148);
+    background: radial-gradient(circle, rgba(16,56,148,1) 0%, rgba(16,27,51,1) 100%);
 }
 
 /*
@@ -129,13 +129,18 @@ Page de connexion/inscription/ect.
     text-align: center;
 }
 
-.textbox input {
+.textbox input, select {
     border: none;
     outline: none;
     background: none;
     font-size: 18px;
     width: 80%;
     margin: 10px;
+    color: white;
+}
+
+.textbox select option {
+    color: black;
 }
 
 .textbox input::placeholder {
@@ -144,6 +149,11 @@ Page de connexion/inscription/ect.
 
 .textbox input, textarea {
     color: white;
+}
+
+.textbox .fileScan {
+    width: 100%;
+    font-size: 75%;
 }
 
 .btn {
@@ -205,32 +215,120 @@ Page de connexion/inscription/ect.
 Page consultation groupes
  */
 
-.groupMain {
+.groupsMain {
     padding-top: 100px;
+}
+
+.groupsMain h1 {
+    text-align: center;
+    margin: 15px;
+}
+
+.groupsMain section {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
     justify-content: center;
-    flex-grow: 1;
-    align-items: flex-start;
+    flex-wrap: wrap;
 }
 
-.group {
-    flex-basis: 350px;
-    flex-shrink: 0;
-    flex-grow: 1;
-    margin: 5px 10px;
+.searchForm .searchBtn {
+    color: white;
     padding: 5px;
-    border: 1px solid black;
-    border-radius: 5px;
-    background-color: white;
-    color: black;
-    font-size: 0rem;
+    background: none;
+    border: 2px solid #00BBFF;
+    cursor: pointer;
 }
 
-.group h2 {
-    font-size: 1rem;
-    display: inline-block;
-    vertical-align: top;
+.searchForm .searchForm:hover {
+    border: 2px solid #02e80d;
+}
+
+.searchFormAv label{
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.searchFormAv input {
+    border: none;
+    color: white;
+    background: none;
+    font-size: 18px;
+    width: 100%;
+    border-bottom: 1px solid #00BBFF;
+}
+
+.groupsArticle {
+    background-color: rgba(21, 83, 218, 0.29);
+    margin: 25px;
+}
+
+.groupsArticle h2 {
+    margin-top: 5px;
+}
+
+.groupsArticle h3 {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.groupsTab {
+    margin-top: 1.5em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.groupsTab, td {
+    border: 1px solid #00BBFF;
+    margin-bottom: 20px;
+}
+
+.groupsTab td {
+    padding: 5px;
+}
+
+.groupsArticle {
+    padding: 10px;
+    border: 2px solid #00BBFF;
+    border-radius: 10px;
+}
+
+.groupsArticle .groupPart {
+    padding-left: 20px;
+}
+
+.groupsArticle .btnConsult {
+    display: block;
+    text-align: center;
+    border: 2px solid #00BBFF;
+    color: white;
+    padding: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-bottom: 0.5em;
+}
+
+.groupsArticle .groupLinks {
+    display: flex;
     margin: 0;
+    padding: 0;
+    list-style: none;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.groupsArticle li {
+    margin-top: 5px;
+}
+
+.groupsArticle a {
+    opacity: 1;
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.groupsArticle a:hover {
+    color: #02e80d;
 }

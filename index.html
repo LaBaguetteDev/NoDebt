@@ -12,7 +12,7 @@
     <label for="nav-toggle"></label><input type="checkbox" id="nav-toggle" class="nav-toggle">
     <nav>
         <ul>
-            <li><a href="#">Home</a></li>
+            <li><a href="#">Créer groupe</a></li>
             <li><a href="myGroups.html">Mes groupes</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
@@ -20,26 +20,27 @@
 </header>
 <main>
     <section>
-        <form method="post">
+        <form method="post" action="myGroups.html">
             <fieldset class="login-box">
                 <h1>
                     Connexion
                 </h1>
                 <article class="textbox">
-                    <i class="fas fa-user"></i>
-                    <label for="username"></label>
-                    <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+                    <i class="fas fa-at"></i>
+                    <label for="username">Adresse mail</label>
+                    <input type="text" id="username" placeholder="jean@exemple.com" required>
                 </article>
                 <article class="textbox">
                     <i class="fas fa-lock"></i>
-                    <label for="password"></label>
-                    <input type="password" id="password" placeholder="Mot de passe" required>
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
                 </article>
 
                 <input class="btn" type="submit" name="" value="Se connecter">
 
                 <article class="help-connect">
                     <a href="register.html">Créer un compte</a>
+                    <a href="forgotPass.html">Mot de passe oublié</a>
                 </article>
             </fieldset>
         </form>

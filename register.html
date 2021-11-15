@@ -12,7 +12,7 @@
     <label for="nav-toggle"></label><input type="checkbox" id="nav-toggle" class="nav-toggle">
     <nav>
         <ul>
-            <li><a href="#">Home</a></li>
+            <li><a href="#">Créer groupe</a></li>
             <li><a href="myGroups.html">Mes groupes</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
@@ -20,7 +20,7 @@
 </header>
 <main>
     <section>
-        <form method="post">
+        <form method="post" action="index.html">
             <fieldset class="login-box">
                 <h1 class="register-screen-title">
                     Créer un nouveau compte
@@ -29,33 +29,33 @@
                     Vos identifiants
                 </h2>
                 <article class="textbox">
-                    <i class="fas fa-user"></i>
-                    <label for="username"></label>
-                    <input type="text" name="username" id="username" placeholder="Nom d'utilisateur" required>
+                    <i class="fas fa-at"></i>
+                    <label for="email">Adresse mail</label>
+                    <input type="email" name="email" id="email" placeholder="jean@exemple.com" required>
                 </article>
                 <article class="textbox">
                     <i class="fas fa-lock"></i>
-                    <label for="password"></label>
-                    <input type="password" name="password" id="password" placeholder="Mot de passe" required>
+                    <label for="password">Mot de passe</label>
+                    <input type="password" name="password" id="password" placeholder="••••••••" required>
+                </article>
+                <article class="textbox">
+                    <i class="fas fa-lock"></i>
+                    <label for="passwordRep">Confirmer mot de passe</label>
+                    <input type="password" name="password" id="passwordRep" placeholder="••••••••" required>
                 </article>
 
                 <h2>
                     Vos infos personnelles
                 </h2>
                 <article class="textbox">
-                    <i class="fas fa-at"></i>
-                    <label for="email"></label>
-                    <input type="email" name="email" id="email" placeholder="Adresse mail" required>
-                </article>
-                <article class="textbox">
                     <i class="fas fa-id-card"></i>
-                    <label for="second_name"></label>
-                    <input type="text" name="second_name" id="second_name" placeholder="Nom" required>
+                    <label for="second_name">Nom</label>
+                    <input type="text" name="second_name" id="second_name" placeholder="Dupont" required>
                 </article>
                 <article class="textbox">
                     <i class="fas fa-signature"></i>
-                    <label for="first_name"></label>
-                    <input type="text" name="first_name" id="first_name" placeholder="Prénom" required>
+                    <label for="first_name">Prénom</label>
+                    <input type="text" name="first_name" id="first_name" placeholder="Jean" required>
                 </article>
 
                 <input class="btn" type="submit" name="create" value="Créer un compte">
