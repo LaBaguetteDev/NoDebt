@@ -1,27 +1,11 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <title>FaceTube - Connexion</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-2/js/all.min.js"></script>
-</head>
-<body>
-<header>
-    <a href="#"><img src="img/logo.png" alt="logo" class="logo"></a>
-    <label for="nav-toggle"></label><input type="checkbox" id="nav-toggle" class="nav-toggle">
-    <nav>
-        <ul>
-            <li><a href="#">Créer groupe</a></li>
-            <li><a href="myGroups.html">Mes groupes</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-    </nav>
-</header>
+<?php
+$titre = 'Inscription';
+include("inc/header.inc.php");
+?>
 <main>
     <section>
-        <form method="post" action="index.html">
-            <fieldset class="login-box">
+        <form method="post" action="index.php">
+            <fieldset class="fieldset-box">
                 <h1 class="register-screen-title">
                     Créer un nouveau compte
                 </h1>
@@ -63,7 +47,7 @@
                 <p class="register-mention">Tous les champs sont obligatoires !</p>
 
                 <article class="help-connect">
-                    <a href="index.html">Se connecter</a>
+                    <a href="index.php">Se connecter</a>
                 </article>
             </fieldset>
         </form>

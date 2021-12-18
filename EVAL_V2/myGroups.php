@@ -1,23 +1,7 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <title>FaceTube - Connexion</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-2/js/all.min.js"></script>
-</head>
-<body>
-<header>
-    <a href="#"><img src="img/logo.png" alt="logo" class="logo"></a>
-    <label for="nav-toggle"></label><input type="checkbox" id="nav-toggle" class="nav-toggle">
-    <nav>
-        <ul>
-            <li><a href="#">Créer groupe</a></li>
-            <li><a href="#">Mes groupes</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-    </nav>
-</header>
+<?php
+$titre = 'Mes groupes';
+include("inc/header.inc.php");
+?>
 <main class="groupsMain">
     <h1>Mes groupes</h1>
     <section>
@@ -58,7 +42,7 @@
                     <td>Jean Dupont</td>
                 </tr>
             </table>
-            <a href="group.html" class="btnConsult">Consulter</a>
+            <a href="group.php" class="btnConsult">Consulter</a>
             <ul class="groupLinks">
                 <li>
                     <a href="#">
@@ -105,7 +89,7 @@
                     <td>Jean Dupont</td>
                 </tr>
             </table>
-            <a href="group.html" class="btnConsult">Consulter</a>
+            <a href="group.php" class="btnConsult">Consulter</a>
             <ul class="groupLinks">
                 <li>
                     <a href="#">
@@ -152,7 +136,7 @@
                     <td>Jean Dupont</td>
                 </tr>
             </table>
-            <a href="group.html" class="btnConsult">Consulter</a>
+            <a href="group.php" class="btnConsult">Consulter</a>
             <ul class="groupLinks">
                 <li>
                     <a href="#">
@@ -178,12 +162,7 @@
                 </tr>
             </table>
 
-            <h3>Invitation par :</h3>
-            <table class="groupsTab">
-                <tr>
-                    <td>Nom Prénom</td>
-                <tr>
-            </table>
+            <h3>Invitation de Nom Prénom</h3>
             <a href="#" class="btnConsult">Rejoindre</a>
             <ul class="groupLinks">
                 <li><a href="#">Supprimer invitation</a></li>

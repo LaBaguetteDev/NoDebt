@@ -81,7 +81,8 @@ header {
 Page de connexion/inscription/ect.
  */
 
-.login-box {
+.fieldset-box {
+    margin-top: 50px;
     width: 280px;
     position: absolute;
     top: 27em;
@@ -91,7 +92,7 @@ Page de connexion/inscription/ect.
     border: 0;
 }
 
-.login-box h1 {
+.fieldset-box h1 {
     float: left;
     font-size: 40px;
     border-bottom: 6px solid #00BBFF;
@@ -99,7 +100,7 @@ Page de connexion/inscription/ect.
     padding: 13px 0;
 }
 
-.login-box .register-screen-title {
+.fieldset-box .register-screen-title {
     float: left;
     font-size: 30px;
     border-bottom: 6px solid #00BBFF;
@@ -107,7 +108,7 @@ Page de connexion/inscription/ect.
     padding: 13px 0;
 }
 
-.login-box h2 {
+.fieldset-box h2 {
     font-size: 20px;
     border-bottom: 3px solid #00BBFF;
     margin-bottom: 0;

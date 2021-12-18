@@ -1,27 +1,11 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <title>FaceTube - Connexion</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-2/js/all.min.js"></script>
-</head>
-<body>
-<header>
-    <a href="#"><img src="img/logo.png" alt="logo" class="logo"></a>
-    <label for="nav-toggle"></label><input type="checkbox" id="nav-toggle" class="nav-toggle">
-    <nav>
-        <ul>
-            <li><a href="#">Créer groupe</a></li>
-            <li><a href="myGroups.html">Mes groupes</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-    </nav>
-</header>
+<?php
+$titre = 'Gerer dépense';
+include("inc/header.inc.php");
+?>
 <main>
     <section>
         <form method="post">
-            <fieldset class="login-box">
+            <fieldset class="fieldset-box">
                 <h1>
                     Gérer dépense
                 </h1>
@@ -49,6 +33,7 @@
                     <i class="fas fa-user-tag"></i>
                     <label for="particiDep">Participant</label>
                     <select id="particiDep" name="particiDep" required>
+                        <option value="" selected disabled hidden>Choisissez un participant</option>
                         <option value="Nom Prenom">Nom Prénom</option>
                         <option value="Nom Prenom">Nom Prénom</option>
                     </select>
@@ -59,7 +44,7 @@
                     <input class="fileScan" type="file" name="scan" accept="image/*, .jpg, .png, .pdf">
                 </article>
 
-                <input class="btn" type="submit" name="" value="Confirmer">
+                <input class="btn" type="submit" name="submitBtn" value="Confirmer">
             </fieldset>
         </form>
     </section>

@@ -20,22 +20,27 @@
 </header>
 <main>
     <section>
-        <form method="post" action="index.html">
-            <fieldset class="login-box">
+        <form method="post" action="myGroups.html">
+            <fieldset class="fieldset-box">
                 <h1>
-                    Réinitialiser mot de passe
+                    Edition groupe
                 </h1>
                 <article class="textbox">
-                    <i class="fas fa-at"></i>
-                    <label for="username"></label>
-                    <input type="text" id="username" placeholder="Votre adresse mail" required>
+                    <i class="fas fa-users"></i>
+                    <label for="username">Nom du groupe</label>
+                    <input type="text" id="username" placeholder="Nom" required>
+                </article>
+                <article class="textbox">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <label for="particiDep">Devise</label>
+                    <select id="particiDep" name="particiDep" required>
+                        <option value="" disabled selected hidden>Choisissez une devise</option>
+                        <option value="Nom Prenom">Euro €</option>
+                        <option value="Nom Prenom">Dollar $</option>
+                    </select>
                 </article>
 
-                <input class="btn" type="submit" name="" value="Réinitialiser">
-
-                <article class="help-connect">
-                    <a href="index.html">Se connecter</a>
-                </article>
+                <input class="btn" type="submit" name="submitBtn" value="Confirmer">
             </fieldset>
         </form>
     </section>
