@@ -5,13 +5,13 @@ include("inc/header.inc.php");
 <main class="groupsMain">
     <section>
         <article class="groupsArticle">
-            <h3>Historique des versements</h3>
+            <h3>Confirmer versements</h3>
             <table class="groupsTab">
                 <tr>
                     <td>Date</td>
                     <td>Auteur</td>
                     <td>Dépense</td>
-                    <td>Editer</td>
+                    <td>Confirmer</td>
                 </tr>
                 <tr>
                     <td>02-02-2022 12:34</td>
