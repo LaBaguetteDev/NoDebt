@@ -72,6 +72,10 @@ include("inc/header.inc.php");
         <i class="fas fa-wallet"></i>
         Gérer dépenses
       </a>
+      <a href="confirmPay.php" class="btnConsult">
+          <i class="fas fa-clipboard-check"></i>
+            Confirmer versement
+      </a>
       <ul class="groupLinks">
         <li>
           <a href="invite.php">
@@ -114,7 +118,7 @@ include("inc/header.inc.php");
           <td>Nom Prénom</td>
           <td>20.50€</td>
           <td>
-            <a href="manageExp.php"><i class="fas fa-pen"></i></a>
+            <a href="manageExp.php" aria-label="Modifier"><i class="fas fa-pen"></i></a>
             <a><i class="fas fa-times"></i></a>
           </td>
         </tr>
