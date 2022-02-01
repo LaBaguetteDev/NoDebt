@@ -1,5 +1,6 @@
 <?php
 $titre = 'Gerer dépense';
+$minDate = date("Y-m-d");
 include("inc/header.inc.php");
 ?>
 <main>
@@ -12,7 +13,7 @@ include("inc/header.inc.php");
                 <article class="textbox">
                     <i class="fas fa-calendar-day"></i>
                     <label for="dateDep">Date</label>
-                    <input type="date" id="dateDep" required>
+                    <input type="date" id="dateDep" value=<?php echo $minDate?> min="<?php echo $minDate?>" required>
                 </article>
                 <article class="textbox">
                     <i class="fas fa-coins"></i>
@@ -33,8 +34,7 @@ include("inc/header.inc.php");
                     <i class="fas fa-user-tag"></i>
                     <label for="particiDep">Participant</label>
                     <select id="particiDep" name="particiDep" required>
-                        <option value="" selected disabled hidden>Choisissez un participant</option>
-                        <option value="Nom Prenom">Nom Prénom</option>
+                        <option selected value="Nom Prenom">Detiffe Florian</option>
                         <option value="Nom Prenom">Nom Prénom</option>
                     </select>
                 </article>

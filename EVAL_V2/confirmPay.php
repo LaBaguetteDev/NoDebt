@@ -18,7 +18,7 @@ include("inc/header.inc.php");
                     <td>Nom Prénom</td>
                     <td>20.50€</td>
                     <td>
-                        <a><i class="fas fa-check"></i></i></a>
+                        <a><i class="fas fa-check"></i></a>
                     </td>
                 </tr>
                 <tr>
@@ -26,7 +26,7 @@ include("inc/header.inc.php");
                     <td>Nom Prénom</td>
                     <td>20.50€</td>
                     <td>
-                        <a><i class="fas fa-check"></i></i></a>
+                        <a><i class="fas fa-check"></i></a>
                     </td>
                 </tr>
                 <tr>
@@ -34,7 +34,7 @@ include("inc/header.inc.php");
                     <td>Nom Prénom</td>
                     <td>20.50€</td>
                     <td>
-                        <a><i class="fas fa-check"></i></i></a>
+                        <a><i class="fas fa-check"></i></a>
                     </td>
                 </tr>
                 <tr>
@@ -42,7 +42,7 @@ include("inc/header.inc.php");
                     <td>Nom Prénom</td>
                     <td>20.50€</td>
                     <td>
-                        <a><i class="fas fa-check"></i></i></a>
+                        <a><i class="fas fa-check"></i></a>
                     </td>
                 </tr>
                 <tr>
@@ -50,7 +50,7 @@ include("inc/header.inc.php");
                     <td>Nom Prénom</td>
                     <td>20.50€</td>
                     <td>
-                        <a><i class="fas fa-check"></i></i></a>
+                        <a><i class="fas fa-check"></i></a>
                     </td>
                 </tr>
                 <tr>
@@ -58,9 +58,12 @@ include("inc/header.inc.php");
                     <td>Nom Prénom</td>
                     <td>20.50€</td>
                     <td>
-                        <a><i class="fas fa-check"></i></i></a>
+                        <a><i class="fas fa-check"></i></a>
                     </td>
                 </tr>
             </table>
         </article>
     </section>
+</main>
+</body>
+</html>
