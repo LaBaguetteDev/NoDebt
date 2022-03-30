@@ -43,14 +43,6 @@ include("inc/header.inc.php");
                 </tr>
             </table>
             <a href="group.php" class="btnConsult">Consulter</a>
-            <ul class="groupLinks">
-                <li>
-                    <a href="#">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Quitter
-                    </a>
-                </li>
-            </ul>
         </article>
         <article class="groupsArticle">
             <h2>Sortie à la foire</h2>
@@ -90,14 +82,6 @@ include("inc/header.inc.php");
                 </tr>
             </table>
             <a href="group.php" class="btnConsult">Consulter</a>
-            <ul class="groupLinks">
-                <li>
-                    <a href="#">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Quitter
-                    </a>
-                </li>
-            </ul>
         </article>
         <article class="groupsArticle">
             <h2>Week-end à la mer</h2>
@@ -137,14 +121,6 @@ include("inc/header.inc.php");
                 </tr>
             </table>
             <a href="group.php" class="btnConsult">Consulter</a>
-            <ul class="groupLinks">
-                <li>
-                    <a href="#">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Quitter
-                    </a>
-                </li>
-            </ul>
         </article>
     </section>
 

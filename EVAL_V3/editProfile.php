@@ -1,5 +1,5 @@
 <?php
-$titre = 'Inscription';
+$titre = 'Modifier profil';
 include("inc/header.inc.php");
 require_once 'php/register.php';
 ?>
@@ -8,7 +8,7 @@ require_once 'php/register.php';
         <form method="post" action="register.php">
             <fieldset class="fieldset-box">
                 <h1 class="register-screen-title">
-                    Créer un nouveau compte
+                    Modifier votre profil
                 </h1>
                 <h2>
                     Vos identifiants
@@ -43,7 +43,7 @@ require_once 'php/register.php';
                     <input type="text" name="first_name" id="first_name" placeholder="Jean" required>
                 </article>
 
-                <input class="btn" type="submit" name="create" value="Créer un compte">
+                <input class="btn" type="submit" name="create" value="Modifier le profil">
 
                 <p class="register-mention">Tous les champs sont obligatoires !</p>
 
@@ -54,7 +54,8 @@ require_once 'php/register.php';
                 ?>
 
                 <article class="help-connect">
-                    <a href="index.php">Se connecter</a>
+                    <a href="editPassword.php">Modifier mot de passe</a>
+                    <a href="#">Supprimer mon compte</a>
                 </article>
             </fieldset>
         </form>

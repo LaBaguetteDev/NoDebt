@@ -16,9 +16,10 @@
             $curPageName = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);
             if($curPageName != 'index.php' && $curPageName != 'forgotPass.php' && $curPageName != 'register.php') {
                 echo'
-                <li><a href="#">Créer groupe</a></li>
+                <li><a href="addGroup.php">Créer groupe</a></li>
                 <li><a href="myGroups.php">Mes groupes</a></li>
-                <li><a href="#"><i class="fas fa-user-circle"></i>&nbsp;Florian</a></li>                
+                <li><a href="editProfile.php"><i class="fas fa-user-circle"></i>&nbsp;Florian</a></li>       
+                <li><a href="#">Déconnexion</a></li>
                 ';
             }
             ?>

@@ -1,5 +1,5 @@
 <?php
-$titre = 'Connexion';
+$titre = 'Edition mot de passe';
 include("inc/header.inc.php");
 ?>
 <main>
@@ -7,7 +7,7 @@ include("inc/header.inc.php");
         <form method="post" action="myGroups.php">
             <fieldset class="fieldset-box">
                 <h1>
-                    Connexion
+                    Modifier mot de passe
                 </h1>
                 <?php
                 if(!empty($message)) {
@@ -15,22 +15,18 @@ include("inc/header.inc.php");
                 }
                 ?>
                 <article class="textbox">
-                    <i class="fas fa-at"></i>
-                    <label for="username">Adresse mail</label>
-                    <input type="text" id="username" placeholder="jean@exemple.com" required>
-                </article>
-                <article class="textbox">
                     <i class="fas fa-lock"></i>
                     <label for="password">Mot de passe</label>
                     <input type="password" id="password" placeholder="••••••••" required>
                 </article>
-
-                <input class="btn" type="submit" name="submitBtn" value="Se connecter">
-
-                <article class="help-connect">
-                    <a href="register.php">Créer un compte</a>
-                    <a href="forgotPass.php">Mot de passe oublié</a>
+                <article class="textbox">
+                    <i class="fas fa-lock"></i>
+                    <label for="password">Confirmer mot de passe</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
                 </article>
+
+                <input class="btn" type="submit" name="submitBtn" value="Modifier">
+
             </fieldset>
         </form>
     </section>
