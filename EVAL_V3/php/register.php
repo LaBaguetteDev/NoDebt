@@ -6,7 +6,7 @@ require_once 'db_utilisateur.inc.php';
 use Utilisateur\Utilisateur;
 use Utilisateur\UtilisateurRepository;
 
-
+session_start();
 $courriel = '';
 $nom = '';
 $prenom = '';
@@ -35,7 +35,10 @@ if (isset($_POST['create'])) {
                 if ($valid) {
                     $utilisateur->motPasse = hash('sha256', $utilisateur->motPasse);
                     $utilisateur2 = $utilisateurRepository->storeMember($utilisateur, $message);
-                    $message = "Inscription terminée";
+                    $_SESSION['prenom'] = $utilisateur->prenom;
+                    $_SESSION['uid'] = $utilisateur->uid;
+
+                    header('Location: myGroups.php');
                 } else {
                     $message = "Vos coordonnées ne sont pas valides";
                 }

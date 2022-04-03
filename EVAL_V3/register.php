@@ -1,4 +1,5 @@
 <?php
+session_start();
 $titre = 'Inscription';
 include("inc/header.inc.php");
 require_once 'php/register.php';

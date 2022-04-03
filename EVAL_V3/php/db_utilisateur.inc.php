@@ -97,4 +97,44 @@ class UtilisateurRepository {
         DBLink::disconnect($bdd);
         return $result;
     }
+
+    public function getUtilisateurByData($courriel, &$message) {
+        $result = null;
+        $bdd = null;
+        try {
+            $bdd = DBLink::connect2db(MYDB, $message);
+            $stmt = $bdd->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE courriel = :courriel");
+            $stmt->bindValue(':courriel', $courriel);
+            if ($stmt->execute()) {
+                $result = $stmt->fetchObject("Utilisateur\Utilisateur");
+            } else {
+                $message .= 'Une erreur système est survenue.<br> Veuillez essayer à nouveau plus tard ou contactez l\'administrateur du site. (Code erreur: ' . $stmt->errorCode() . ')<br>';
+            }
+            $stmt = null;
+        } catch (Exception $e) {
+            $message .= $e->getMessage() . '<br>';
+        }
+        DBLink::disconnect($bdd);
+        return $result;
+    }
+
+    public function getUtilisateurById($uid, &$message) {
+        $result = null;
+        $bdd = null;
+        try {
+            $bdd = DBLink::connect2db(MYDB, $message);
+            $stmt = $bdd->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE uid = :uid");
+            $stmt->bindValue(':uid', $uid);
+            if ($stmt->execute()) {
+                $result = $stmt->fetchObject("Utilisateur\Utilisateur");
+            } else {
+                $message .= 'Une erreur système est survenue.<br> Veuillez essayer à nouveau plus tard ou contactez l\'administrateur du site. (Code erreur: ' . $stmt->errorCode() . ')<br>';
+            }
+            $stmt = null;
+        } catch (Exception $e) {
+            $message .= $e->getMessage() . '<br>';
+        }
+        DBLink::disconnect($bdd);
+        return $result;
+    }
 }

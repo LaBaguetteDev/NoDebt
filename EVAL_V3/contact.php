@@ -1,62 +1,28 @@
 <?php
+session_start();
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/Exception.php';
+$titre = 'Contact';
+include("inc/header.inc.php");
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-    $titre = 'Contact';
-    include("inc/header.inc.php");
-
-    $errors = [];
-
-    function envoiMail() {
-        if(!empty($_POST)) {
-            $email = $_POST['email'];
-            $subject = $_POST['subject'];
-            $message = $_POST['message'];
-
-            if(empty($email)) {
-                $errors = 'Votre email est vide';
-            } else if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errors = 'email non valide';
-            }
-            if(empty($subject)) {
-                $errors = 'Votre sujet est vide';
-            }
-            if(empty($message)) {
-                $errors = 'Votre message est vide';
-            }
-
-            if(!empty($errors)) {
-                $allErrors = join('<br>', $errors);
-                echo "<p style='color: red;'>{$allErrors}</p>";
-            } else {
-                try {
-                    $mail = new PHPMailer(true);
-                    $mail->CharSet = 'UTF-8';
-                    $mail->setFrom('contact@nodebt.com');
-                    $mail->addAddress("f.detiffe@student.helmo.be");
-                    $mail->addReplyTo("no-reply@nodebt.com");
-                    $mail->isHTML(false);
-                    $mail->Subject = "Contact NoDebt - " . $subject;
-                    $mail->Body = $message;
-                    $mail->send();
-                    echo "<p style='color: lawngreen'>Message envoyé</p>";
-                } catch (Exception $ex) {
-                    echo "<p style='color: red'>Une erreur est survenue lors de l'envoi du message : " . $mail->ErrorInfo . "</p>";
-                }
-            }
-        }
-    }
-
+require_once 'php/contact.php';
 ?>
 <main>
     <section>
-        <form method="POST" action="contact.php" id="contact-form">
+        <form method="POST" id="contact-form">
             <fieldset class="fieldset-box">
                 <h1>
                     Nous contacter
                 </h1>
+                <?php
+                if(!empty($message)) {
+                    echo '
+                    <article class="alertbox">
+                        <h3 class="connexion-message">'.$message.'</h3>
+                    </article>
+                    ';
+                }
+                ?>
                 <article class="textbox">
                     <i class="fas fa-at"></i>
                     <label for="email"></label>
@@ -76,9 +42,6 @@ use PHPMailer\PHPMailer\Exception;
                 <input class="btn" type="submit" name="submitBtn" value="Envoyer">
 
                 <article class="help-connect">
-                    <?php
-                        envoiMail();
-                    ?>
                     <a href="index.php">Se connecter</a>
                 </article>
             </fieldset>

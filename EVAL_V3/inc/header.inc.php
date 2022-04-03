@@ -8,18 +8,17 @@
 </head>
 <body>
 <header>
-    <a href="#"><img src="img/logo.png" alt="logo" class="logo"></a>
+    <a href="index.php"><img src="img/logo.png" alt="logo" class="logo"></a>
     <label for="nav-toggle"></label><input type="checkbox" id="nav-toggle" class="nav-toggle">
     <nav>
         <ul>
             <?php
-            $curPageName = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);
-            if($curPageName != 'index.php' && $curPageName != 'forgotPass.php' && $curPageName != 'register.php') {
+            if(isset($_SESSION['uid'])) {
                 echo'
                 <li><a href="addGroup.php">Créer groupe</a></li>
                 <li><a href="myGroups.php">Mes groupes</a></li>
-                <li><a href="editProfile.php"><i class="fas fa-user-circle"></i>&nbsp;Florian</a></li>       
-                <li><a href="#">Déconnexion</a></li>
+                <li><a href="editProfile.php"><i class="fas fa-user-circle"></i>&nbsp;'. $_SESSION['prenom'] .'</a></li>       
+                <li><a href="php/logout.php">Déconnexion</a></li>
                 ';
             }
             ?>

@@ -1,6 +1,13 @@
 <?php
+session_start();
+if(!isset($_SESSION['uid'])) {
+    header('Location: index.php');
+}
+
 $titre = 'Editer Groupe';
 include("inc/header.inc.php");
+
+
 ?>
 <main>
     <section>

@@ -1,4 +1,9 @@
 <?php
+session_start();
+if(!isset($_SESSION['uid'])) {
+    header('Location: index.php');
+}
+
 $titre = 'Gerer dépense';
 $minDate = date("Y-m-d");
 include("inc/header.inc.php");
