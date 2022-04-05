@@ -12,7 +12,7 @@ function isValid($mail,$mot_de_passe, $mdpv, &$message) {
         $message .= 'Votre adresse courriel est invalide.<br>';
         return false;
     }
-    if ($memberRepository->existsInDBEmail($mail, $message)){
+    if ($memberRepository->existInDB($mail, $message)){
         $message .= 'Vous êtes déjà inscrit avec ce courriel.<br>';
         return false;
     }

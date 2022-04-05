@@ -6,7 +6,6 @@ require_once 'db_utilisateur.inc.php';
 use Utilisateur\Utilisateur;
 use Utilisateur\UtilisateurRepository;
 
-session_start();
 $courriel = '';
 $nom = '';
 $prenom = '';

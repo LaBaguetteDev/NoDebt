@@ -6,6 +6,13 @@ $titre = 'Contact';
 include("inc/header.inc.php");
 
 require_once 'php/contact.php';
+require_once 'php/db_utilisateur.inc.php';
+
+use Utilisateur\UtilisateurRepository;
+
+$utilisateurRepository = new UtilisateurRepository();
+$createur = $utilisateurRepository->getUtilisateurById($_SESSION['uid'], $message);
+
 ?>
 <main>
     <section>
@@ -26,7 +33,7 @@ require_once 'php/contact.php';
                 <article class="textbox">
                     <i class="fas fa-at"></i>
                     <label for="email"></label>
-                    <input type="text" name="email" id="email" placeholder="Votre adresse mail" required>
+                    <input type="text" name="email" id="email" placeholder="Votre adresse mail" required value="<?php echo $createur->courriel?>">
                 </article>
                 <article class="textbox">
                     <i class="fas fa-pen"></i>

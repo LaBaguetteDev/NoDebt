@@ -4,11 +4,22 @@ if(!isset($_SESSION['uid'])) {
     header('Location: index.php');
 }
 
+if(!isset($_GET['gid'])) {
+    header('Location: index.php');
+}
+require_once 'php/db_groupe.inc.php';
+use Groupe\GroupeRepository;
+
+$gid = $_GET['gid'];
+
+$groupeRepository = new GroupeRepository();
+$group = $groupeRepository->showGroupById($gid);
+
 $titre = 'Groupe';
 include("inc/header.inc.php");
 ?>
 <main class="groupsMain">
-  <h1>Vacances au Costa Rica</h1>
+  <h1><?php echo $group->nom ?></h1>
   <section>
     <form method="get" class="searchForm">
       <article class="textbox">
@@ -73,9 +84,9 @@ include("inc/header.inc.php");
           <td>60.50€</td>
         </tr>
       </table>
-      <a href="manageExp.php" class="btnConsult">
+      <a href="addExp.php" class="btnConsult">
         <i class="fas fa-wallet"></i>
-        Gérer dépenses
+        Ajouter dépense
       </a>
       <a href="confirmPay.php" class="btnConsult">
           <i class="fas fa-clipboard-check"></i>
@@ -114,7 +125,7 @@ include("inc/header.inc.php");
           <td>Nom Prénom</td>
           <td>20.50€</td>
           <td>
-            <a href="manageExp.php"><i class="fas fa-pen"></i></a>
+            <a href="addExp.php"><i class="fas fa-pen"></i></a>
             <a><i class="fas fa-times"></i></a>
           </td>
         </tr>
@@ -123,7 +134,7 @@ include("inc/header.inc.php");
           <td>Nom Prénom</td>
           <td>20.50€</td>
           <td>
-            <a href="manageExp.php" aria-label="Modifier"><i class="fas fa-pen"></i></a>
+            <a href="addExp.php" aria-label="Modifier"><i class="fas fa-pen"></i></a>
             <a><i class="fas fa-times"></i></a>
           </td>
         </tr>
@@ -132,7 +143,7 @@ include("inc/header.inc.php");
           <td>Nom Prénom</td>
           <td>20.50€</td>
           <td>
-            <a href="manageExp.php"><i class="fas fa-pen"></i></a>
+            <a href="addExp.php"><i class="fas fa-pen"></i></a>
             <a><i class="fas fa-times"></i></a>
           </td>
         </tr>
@@ -141,7 +152,7 @@ include("inc/header.inc.php");
           <td>Nom Prénom</td>
           <td>20.50€</td>
           <td>
-            <a href="manageExp.php"><i class="fas fa-pen"></i></a>
+            <a href="addExp.php"><i class="fas fa-pen"></i></a>
             <a><i class="fas fa-times"></i></a>
           </td>
         </tr>
@@ -150,7 +161,7 @@ include("inc/header.inc.php");
           <td>Nom Prénom</td>
           <td>20.50€</td>
           <td>
-            <a href="manageExp.php"><i class="fas fa-pen"></i></a>
+            <a href="addExp.php"><i class="fas fa-pen"></i></a>
             <a><i class="fas fa-times"></i></a>
           </td>
         </tr>
@@ -159,7 +170,7 @@ include("inc/header.inc.php");
           <td>Nom Prénom</td>
           <td>20.50€</td>
           <td>
-            <a href="manageExp.php"><i class="fas fa-pen"></i></a>
+            <a href="addExp.php"><i class="fas fa-pen"></i></a>
             <a><i class="fas fa-times"></i></a>
           </td>
         </tr>

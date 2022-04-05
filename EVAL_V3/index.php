@@ -2,7 +2,7 @@
 session_start();
 $titre = 'Connexion';
 include("inc/header.inc.php");
-require_once 'php/login.php'
+require_once 'php/login.php';
 ?>
 <main>
     <section>
@@ -15,7 +15,7 @@ require_once 'php/login.php'
                 if(!empty($message)) {
                     echo '
                     <article class="alertbox">
-                        <h3 class="connexion-message">'.$message.'</h3>
+                        <h3 class="connexion-message">'.$message .'</h3>
                     </article>
                     ';
                 }

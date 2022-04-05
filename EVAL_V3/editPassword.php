@@ -21,7 +21,7 @@ include("inc/header.inc.php");
                 ?>
                 <article class="textbox">
                     <i class="fas fa-lock"></i>
-                    <label for="password">Mot de passe</label>
+                    <label for="password">Nouveau mot de passe</label>
                     <input type="password" id="password" placeholder="••••••••" required>
                 </article>
                 <article class="textbox">
