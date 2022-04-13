@@ -1,65 +1,49 @@
 <?php
+session_start();
+if (!isset($_SESSION['uid']) || !isset($_GET['gid'])) {
+    header('Location: index.php');
+}
 
 require_once 'php/db_groupe.inc.php';
-require_once 'php/db_participe.inc.php';
 
 use Groupe\Groupe;
 use Groupe\GroupeRepository;
-use Participer\Participer;
-use Participer\ParticiperRepository;
 
-session_start();
-if(!isset($_SESSION['uid'])) {
-    header('Location: index.php');
-}
-$message = "";
-$nom = '';
-$devise = '';
-$uid = $_SESSION['uid'];
+$gid = $_GET['gid'];
+
 $groupeRepository = new GroupeRepository();
-$participerRepository = new ParticiperRepository();
+$group = $groupeRepository->showGroupById($gid);
 
-
-
-if(isset($_POST['submitBtn'])) {
-
-    if(empty($_POST['groupName']) || empty($_POST['devise'])) {
+$message = "";
+if (isset($_POST['submitBtn'])) {
+    if (empty($_POST['groupName']) || empty($_POST['devise'])) {
         $message = "Un champ est manquant";
-    } else if(strcmp($_POST['devise'], 'euro') !== 0 || strcmp($_POST['devise'], 'dollar') !== 0) {
+    } else if (strcmp($_POST['devise'], 'euro') !== 0 || strcmp($_POST['devise'], 'dollar') !== 0) {
         $message = "Devise invalide";
     } else {
         $groupe = new Groupe();
         $groupe->nom = htmlentities($_POST['groupName']);
         $groupe->devise = htmlentities($_POST['devise']);
-        $groupe->createur = $uid;
 
-        $groupeRepository->storeGroupe($groupe, $message);
-
-        $participer = new Participer();
-        $participer->gid = $groupe->gid;
-        $participer->uid = $uid;
-        $participer->estConfirme = true;
-
-        $participerRepository->setParticipe($participer);
+        $groupeRepository->updateGroup($gid, $groupe, $message);
     }
 }
 
-$titre = 'Créer Groupe';
+$titre = 'Editer Groupe';
 include("inc/header.inc.php");
-
 ?>
 <main>
     <section>
         <form method="post">
             <fieldset class="fieldset-box">
                 <h1>
-                    Créer groupe
+                    Edition groupe
                 </h1>
                 <?php
-                if(!empty($message)) {
+                if (!empty($message)) {
                     echo '
                     <article class="alertbox">
-                        <h3 class="connexion-message">'.$message.'</h3>
+                        <h3 class="connexion-message">' . $message . '</h3>
                     </article>
                     ';
                 }
@@ -67,14 +51,19 @@ include("inc/header.inc.php");
                 <article class="textbox">
                     <i class="fas fa-users"></i>
                     <label for="username">Nom du groupe</label>
-                    <input name="groupName" type="text" id="username" placeholder="Nom" required value="<?php if (isset($_POST['groupName'])) echo $_POST['groupName'] ?>">
+                    <input name="groupName" type="text" id="username" placeholder="Nom" required
+                           value="<?php echo $group->nom ?>">
                 </article>
                 <article class="textbox">
                     <i class="fas fa-money-bill-wave"></i>
                     <label for="particiDep">Devise</label>
                     <select id="particiDep" name="devise" required>
-                        <option selected value="euro">Euro €</option>
-                        <option value="dollar">Dollar $</option>
+                        <option value="" disabled hidden>Choisissez une devise</option>
+                        <option value="euro" <?php if (strcmp($group->devise, 'euro') == 0) echo 'selected' ?>>Euro €
+                        </option>
+                        <option value="dollar" <?php if (strcmp($group->devise, 'dollar') == 0) echo 'selected' ?>>
+                            Dollar $
+                        </option>
                     </select>
                 </article>
 

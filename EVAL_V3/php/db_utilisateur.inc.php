@@ -3,6 +3,7 @@ namespace Utilisateur;
 require_once 'db_link.inc.php';
 
 use DB\DBLink;
+use PDO;
 use PDOException;
 
 setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
@@ -74,6 +75,27 @@ class UtilisateurRepository {
         return $noError;
     }
 
+    public function updateUtilisateur($utilisateur, $uid, &$message) {
+        $noError = false;
+        $bdd = null;
+        try {
+            $bdd = DBLink::connect2db(MYDB, $message);
+            $stmt = $bdd->prepare("UPDATE " . self::TABLE_NAME . " SET courriel=:courriel, nom=:nom, prenom=:prenom  WHERE uid =:uid");
+            $stmt->bindValue(':courriel', $utilisateur->courriel);
+            $stmt->bindValue(':nom', $utilisateur->nom);
+            $stmt->bindValue(':prenom', $utilisateur->prenom);
+            $stmt->bindValue(':uid', $uid);
+            if ($stmt->execute()) {
+                $noError = true;
+                $message = "Votre profil a bien été modifié";
+            }
+        } catch (PDOException $e) {
+            $message .= $e->getMessage() . '<br>';
+        }
+        DBLink::disconnect($bdd);
+        return $noError;
+    }
+
     public function getUtilisateurByData($courriel, &$message) {
         $result = null;
         $bdd = null;
@@ -94,7 +116,7 @@ class UtilisateurRepository {
         return $result;
     }
 
-    public function getUtilisateurById($uid, &$message) {
+    public function getUtilisateurById($uid) {
         $result = null;
         $bdd = null;
         try {
@@ -110,6 +132,24 @@ class UtilisateurRepository {
         } catch (PDOException $e) {
             $message .= $e->getMessage() . '<br>';
         }
+        DBLink::disconnect($bdd);
+        return $result;
+    }
+
+    public function getUtilisateursFromGid($gid) {
+        $result  = null;
+        $bdd     = null;
+
+        try {
+            $bdd = DBLink::connect2db(MYDB, $message);
+            $stmt = $bdd->prepare("SELECT * FROM ".self::TABLE_NAME." u JOIN Participer p on u.uid = p.uid WHERE p.gid = :gid && p.estConfirme = 1");
+            $stmt->bindValue(':gid', $gid);
+            if ($stmt->execute()){
+                $result = $stmt->fetchAll(PDO::FETCH_CLASS, "Utilisateur\Utilisateur");
+            }
+            $stmt = null;
+        } catch(PDOException $e) {}
+
         DBLink::disconnect($bdd);
         return $result;
     }

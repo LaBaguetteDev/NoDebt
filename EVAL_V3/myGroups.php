@@ -2,21 +2,30 @@
 
 require_once 'php/db_groupe.inc.php';
 require_once 'php/db_utilisateur.inc.php';
+require_once 'php/db_participe.inc.php';
+require_once 'php/db_depense.inc.php';
 
 use Groupe\GroupeRepository;
 use Utilisateur\UtilisateurRepository;
+use Participer\ParticiperRepository;
+use Depense\DepenseRepository;
 
 session_start();
-if(!isset($_SESSION['uid'])) {
+if (!isset($_SESSION['uid'])) {
     header('Location: index.php');
 }
 $message = "";
 $groupRepository = new GroupeRepository();
 $utilisateurRepository = new UtilisateurRepository();
 $groups = $groupRepository->showGroups();
+$participerRepository = new ParticiperRepository();
+$participations = $participerRepository->getParticipeByUserId($_SESSION['uid']);
 
-$createur = $utilisateurRepository->getUtilisateurById($_SESSION['uid'], $message);
+$depensesRepository = new DepenseRepository();
 
+$groupsArray = null;
+$myGroupsArray = null;
+$inviteGroupsArray = null;
 
 $titre = 'Mes groupes';
 include("inc/header.inc.php");
@@ -26,40 +35,42 @@ include("inc/header.inc.php");
     <section>
         <?php
 
-        if($groups->rowCount() == 0) {
-            echo '
-            <h3>Vous n\'êtes dans aucun groupe</h3>
-            ';
-        }
-
-        while($group = $groups->fetch(PDO::FETCH_ASSOC)) {
-            echo '
+        while ($group = $groups->fetch(PDO::FETCH_ASSOC)) {
+            $groupsArray[] = $group;
+            foreach ($participations as $participation) {
+                if ($participation->uid == $_SESSION['uid'] && $participation->estConfirme) {
+                    $devise = "";
+                    if (strcmp($group['devise'], "euro") == 0) {
+                        $devise = "€";
+                    } else {
+                        $devise = "$";
+                    }
+                    $myGroupsArray[] = $group;
+                    $createur = $utilisateurRepository->getUtilisateurById($group['uid']);
+                    $depenses = $depensesRepository->getThreeLastDepenseByGid($group['gid']);
+                    echo '
             <article class="groupsArticle">
-            <h2>'. $group['nom'] .'</h2>
+            <h2>' . $group['nom'] . '</h2>
             <h3>Dernières dépenses</h3>
             <table class="groupsTab">
                 <tr>
                     <td>Date</td>
                     <td>Auteur</td>
                     <td>Dépense</td>
-                </tr>
-                <tr>
-                    <td>02-02-2022 12:34</td>
-                    <td>Nom Prénom</td>
-                    <td>20.50€</td>
-                </tr>
-                <tr>
-                    <td>02-02-2022 12:34</td>
-                    <td>Nom Prénom</td>
-                    <td>20.50€</td>
-                </tr>
-                <tr>
-                    <td>02-02-2022 12:34</td>
-                    <td>Nom Prénom</td>
-                    <td>20.50€</td>
-                </tr>
-            </table>
+                </tr>';
 
+                    foreach ($depenses as $d) {
+                        $u = $utilisateurRepository->getUtilisateurById($d->uid);
+                        echo '
+                <tr>
+                    <td>' . $d->date . '</td>
+                    <td>' . $u->nom . ' ' . $u->prenom . '</td>
+                    <td>' . $d->montant . $devise . '</td>
+                </tr>';
+                    }
+                    echo
+                    '</table>';
+                    echo '
             <h3>Statistiques</h3>
             <table class="groupsTab">
                 <tr>
@@ -67,37 +78,91 @@ include("inc/header.inc.php");
                     <td>Créateur du groupe</td>
                 </tr>
                 <tr>
-                    <td>250.00€</td>
-                    <td>'. $createur->prenom . ' ' . $createur->nom .'</td>
+                    <td>' . $depensesRepository->getTotalByGid($group['gid']) . $devise . '</td>
+                    <td>' . $createur->prenom . ' ' . $createur->nom . '</td>
                 </tr>
             </table>
-            <a href="group.php?gid='. $group['gid'] .'" class="btnConsult">Consulter</a>
+            <a href="group.php?gid=' . $group['gid'] . '" class="btnConsult">Consulter</a>
         </article>
             ';
+                }
+            }
         }
+        if (sizeof($myGroupsArray) == 0) {
+            echo '
+            <h3>Vous n\'êtes dans aucun groupe</h3>
+            ';
+        }
+
         ?>
     </section>
 
     <h1>Invitations à un groupe</h1>
     <section>
-        <article class="groupsArticle">
-            <h2>Week-end gîte ardennes</h2>
-            <h3>Membres dans le groupe</h3>
+
+        <?php
+        foreach ($groupsArray as $group) {
+            foreach ($participations as $participation) {
+                if ($participation->uid == $_SESSION['uid'] && !$participation->estConfirme) {
+                    $inviteGroupsArray[] = $group;
+                    $devise = "";
+                    if (strcmp($group['devise'], "euro") == 0) {
+                        $devise = "€";
+                    } else {
+                        $devise = "$";
+                    }
+                    $myGroupsArray[] = $group;
+                    $createur = $utilisateurRepository->getUtilisateurById($group['uid']);
+                    $depenses = $depensesRepository->getThreeLastDepenseByGid($group['gid']);
+                    echo '
+            <article class="groupsArticle">
+            <h2>' . $group['nom'] . '</h2>
+            <h3>Dernières dépenses</h3>
             <table class="groupsTab">
                 <tr>
-                    <td>Nom prénom</td>
+                    <td>Date</td>
+                    <td>Auteur</td>
+                    <td>Dépense</td>
+                </tr>';
+
+                    foreach ($depenses as $d) {
+                        $u = $utilisateurRepository->getUtilisateurById($d->uid);
+                        echo '
+                <tr>
+                    <td>' . $d->date . '</td>
+                    <td>' . $u->nom . ' ' . $u->prenom . '</td>
+                    <td>' . $d->montant . $devise . '</td>
+                </tr>';
+                    }
+                    echo
+                    '</table>';
+                    echo '
+            <h3>Statistiques</h3>
+            <table class="groupsTab">
+                <tr>
+                    <td>Dépenses totales</td>
+                    <td>Créateur du groupe</td>
                 </tr>
                 <tr>
-                    <td>Nom Prénom</td>
+                    <td>' . $depensesRepository->getTotalByGid($group['gid']) . $devise . '</td>
+                    <td>' . $createur->prenom . ' ' . $createur->nom . '</td>
                 </tr>
             </table>
-
-            <h3>Invitation de Nom Prénom</h3>
+            <a href="group.php?gid=' . $group['gid'] . '" class="btnConsult">Consulter</a>
             <a href="#" class="btnConsult">Rejoindre</a>
-            <ul class="groupLinks">
-                <li><a href="#">Supprimer invitation</a></li>
-            </ul>
+    <ul class="groupLinks">
+        <li><a href="#">Supprimer invitation</a></li>
+    </ul>
         </article>
+            ';
+                }
+            }
+        }
+
+        if (sizeof($inviteGroupsArray) == 0) {
+            echo '<h3>Vous n\'êtes invité dans aucun groupe</h3>';
+        }
+        ?>
     </section>
 </main>
 </body>

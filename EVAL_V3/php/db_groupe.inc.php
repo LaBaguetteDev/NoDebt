@@ -75,4 +75,24 @@ class GroupeRepository {
         DBLink::disconnect($bdd);
         return $result;
     }
+
+    public function updateGroup($gid, $group, &$message) {
+        $noError = false;
+        $bdd = null;
+        try {
+            $bdd = DBLink::connect2db(MYDB, $message);
+            $stmt = $bdd->prepare("UPDATE " . self::TABLE_NAME . " SET nom =:nom, devise =:devise WHERE gid =:gid");
+            $stmt->bindValue(':nom', $group->nom);
+            $stmt->bindValue(':devise', $group->devise);
+            $stmt->bindValue(':gid', $gid);
+            if ($stmt->execute()) {
+                $noError = true;
+                $message = "Le groupe a bien été modifié";
+            }
+        } catch (PDOException $e) {
+            $message .= $e->getMessage() . '<br>';
+        }
+        DBLink::disconnect($bdd);
+        return $noError;
+    }
 }
