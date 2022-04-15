@@ -92,6 +92,18 @@ Page de connexion/inscription/ect.
     border: 0;
 }
 
+.form-scan {
+    display: flex;
+    justify-content: center;
+}
+
+.fieldset-scan {
+    margin-top: 50px;
+    width: 280px;
+    color: white;
+    border: 0;
+}
+
 .fieldset-box h1 {
     float: left;
     font-size: 40px;
@@ -113,6 +125,13 @@ Page de connexion/inscription/ect.
     border-bottom: 3px solid #00BBFF;
     margin-bottom: 0;
     padding: 6px 0;
+}
+
+.fieldset-box img {
+    width: auto;
+    max-height: 250px;
+    height: auto;
+    max-width: 200px;
 }
 
 .textbox {
@@ -295,6 +314,13 @@ Page consultation groupes
 .groupsArticle h3 {
     text-align: center;
     margin-bottom: 5px;
+}
+
+.groupsArticle img {
+    width: auto;
+    max-height: 750px;
+    height: auto;
+    max-width: 700px;
 }
 
 .groupsTab {

@@ -71,4 +71,5 @@ function envoiMail($email, $subject, $messageToSend, &$message) {
             }
         }
     }
+
 }

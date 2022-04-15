@@ -154,12 +154,13 @@ include("inc/header.inc.php");
                 <tr>
                     <td>Date</td>
                     <td>Auteur</td>
-                    <td>Dépense</td>
+                    <td>Montant</td>
                     <td>Libelle</td>
                     <td>Tag</td>
                     <?php
                     if ($participe->estConfirme == 1) {
                         echo '
+                        <td>Scan</td>
                         <td>Editer</td>
                         ';
                     }
@@ -178,10 +179,13 @@ include("inc/header.inc.php");
           <td>' . $d->tag . '</td>';
                     if ($participe->estConfirme == 1) {
                         echo '
-          <td>
-            <a href="addExp.php?gid=' . $gid . '&did=' . $d->did . '"><i class="fas fa-pen"></i></a>
-            <a href="confirmDeleteExp.php?did= ' . $d->did . '&gid=' . $gid . '"><i class="fas fa-times"></i></a>
-          </td>
+            <td>
+                <a href="scan.php?did= ' . $d->did . '">Consulter</a>
+            </td>
+            <td>
+                <a href="addExp.php?gid=' . $gid . '&did=' . $d->did . '"><i class="fas fa-pen"></i></a>
+                <a href="confirmDeleteExp.php?did= ' . $d->did . '&gid=' . $gid . '"><i class="fas fa-times"></i></a>
+            </td>
         </tr>
               ';
                     }
