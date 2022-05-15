@@ -11,16 +11,24 @@ require_once 'php/db_depense.inc.php';
 require_once 'php/db_utilisateur.inc.php';
 require_once 'php/db_groupe.inc.php';
 require_once 'php/db_participe.inc.php';
+require_once 'php/db_versement.inc.php';
 
 use Depense\DepenseRepository;
 use Utilisateur\UtilisateurRepository;
 use Groupe\GroupeRepository;
 use Participer\ParticiperRepository;
+use Versement\VersementRepository;
 
 $uid = $_SESSION['uid'];
 $gid = $_GET['gid'];
 
+$versementRepository = new VersementRepository();
 
+if (isset($_GET['vid'])) {
+    $versementRepository->confirmerVersement($_GET['vid']);
+}
+
+$versements = $versementRepository->getVersementsofGid($gid);
 
 $participerRepository = new ParticiperRepository();
 $participe = $participerRepository->getConfirmeByUidAndGid($uid, $gid);
@@ -51,6 +59,9 @@ $depenses = $depenseRepository->getAllDepenseByGid($gid);
 $total = $depenseRepository->getTotalByGid($gid);
 $moyPerUser = $total / sizeof($utilisateurs);
 
+
+$isSold = !empty($versements);
+
 $titre = 'Groupe';
 include("inc/header.inc.php");
 ?>
@@ -61,7 +72,7 @@ include("inc/header.inc.php");
             <input type="hidden" name="gid" value="<?php echo $gid?>">
             <section class="textbox">
                 <label for="expSearch"></label>
-                <input type="search" name="search" id="expSearch" placeholder="Chercher une dépense">
+                <input type="search" name="search" id="expSearch" placeholder="Chercher une dépense" value="<?php if(isset($_COOKIE['search'])) echo $_COOKIE['search']?>">
                 <button class="searchBtn">
                     <i class="fas fa-search"></i>
                 </button>
@@ -69,18 +80,17 @@ include("inc/header.inc.php");
             <section class="searchFormAv">
                 <details>
                     <summary>Recherche avancée</summary>
-
                     <label for="montMin">Montant minimum</label>
-                    <input id="montMin" name="montMin" type="number" min="0" step="0.01" placeholder="0€">
+                    <input id="montMin" name="montMin" type="number" min="0" step="0.01" placeholder="0€" value="<?php if(isset($_COOKIE['montMin'])) echo $_COOKIE['montMin']?>">
 
                     <label for="montMax">Montant maximum</label>
-                    <input id="montMax" name="montMax" type="number" min="0" step="0.01" placeholder="0€">
+                    <input id="montMax" name="montMax" type="number" min="0" step="0.01" placeholder="0€" value="<?php if(isset($_COOKIE['montMax'])) echo $_COOKIE['montMax']?>">
 
                     <label for="dateDeb">Date début</label>
-                    <input id="dateDeb" name="dateDeb" type="date">
+                    <input id="dateDeb" name="dateDeb" type="date" value="<?php if(isset($_COOKIE['dateDeb'])) echo $_COOKIE['dateDeb']?>">
 
                     <label for="dateFin">Date fin</label>
-                    <input id="dateFin" name="dateFin" type="date">
+                    <input id="dateFin" name="dateFin" type="date" value="<?php if(isset($_COOKIE['dateFin'])) echo $_COOKIE['dateFin']?>">
                 </details>
             </section>
         </form>
@@ -104,12 +114,53 @@ include("inc/header.inc.php");
         <tr>
           <td>' . $u->nom . ' ' . $u->prenom . '</td>
           <td>' . $uTotal . $devise . ' </td>
-          <td>' . ($depenseRepository->getTotalFromUserByGid($u->uid, $gid) - $moyPerUser) . $devise . '</td>
+          <td>' . round(($depenseRepository->getTotalFromUserByGid($u->uid, $gid) - $moyPerUser), 2) . $devise . '</td>
         </tr>
               ';
                 }
                 ?>
             </table>
+
+            <?php
+            if($isSold) {
+                echo '
+                <h2>Versements</h2>
+                <table class="groupsTab">
+                <tr>
+                    <td>Verseur</td>
+                    <td>Bénéficiaire</td>
+                    <td>Montant</td>
+                    <td>Confirmation</td>
+                </tr>';
+
+                foreach ($versements as $v) {
+                    $verseur = $utilisateurRepository->getUtilisateurById($v->uidVerseur);
+                    $benefi = $utilisateurRepository->getUtilisateurById($v->uidBenefi);
+                    $confirm = $v->uidBenefi == $_SESSION['uid'];
+                    echo '
+                <tr>
+                    <td>' . $verseur->nom . ' ' . $verseur->prenom . '</td>
+                    <td>' . $benefi->nom . ' ' . $benefi->prenom . '</td>
+                    <td>' . $v->montant . $devise . '</td>
+                    ';
+                    if ($confirm && $v->estConfirme == 0) {
+                        echo '<td><a href="group.php?gid=' . $gid . '&vid=' . $v->vid . '"><i class="fas fa-check"></i></a></td>';
+                    } else {
+                        if ($v->estConfirme == 0) {
+                            echo '<td>Non confirmé</td>';
+                        } else {
+                            echo '<td>Confirmé</td>';
+                        }
+                    }
+                    echo '</tr>
+                ';
+                }
+                echo '
+                </table>
+                ';
+            }
+            ?>
+
 
             <h2>Statistiques</h2>
             <table class="groupsTab">
@@ -119,7 +170,7 @@ include("inc/header.inc.php");
                 </tr>
                 <tr>
                     <td><?php echo $total . $devise ?></td>
-                    <td><?php echo $moyPerUser . $devise ?></td>
+                    <td><?php echo round($moyPerUser, 2) . $devise ?></td>
                 </tr>
 
             </table>
@@ -130,11 +181,22 @@ include("inc/header.inc.php");
                 <a href="addExp.php?gid=' . $gid . '" class="btnConsult">
                 <i class="fas fa-wallet"></i>
                 Ajouter dépense
-            </a>
-            <a href="confirmPay.php" class="btnConsult">
+            </a>';
+                if($isSold) {
+                    echo '
+            <a href="cancelSoldeGroup.php?gid=' . $gid . '" class="btnConsult">
                 <i class="fas fa-clipboard-check"></i>
-                Solder groupe
+                Annuler solde
+            </a> ';
+                } else {
+                    echo '
+                <a href="soldeGroup.php?gid=' . $gid . '" class="btnConsult">
+                <i class="fas fa-clipboard-check"></i>
+                Solder solde
             </a>
+            ';
+                }
+                echo '
             <ul class="groupLinks">
                 <li>
                     <a href="invite.php?gid=' . $gid . '" class="btnConsult">
@@ -168,7 +230,7 @@ include("inc/header.inc.php");
                     <td>Tag</td>
                     <td>Facture</td>
                     <?php
-                    if ($participe->estConfirme == 1) {
+                    if ($participe->estConfirme == 1 && !$isSold) {
                         echo '
                         <td>Editer</td>
                         ';
@@ -189,7 +251,7 @@ include("inc/header.inc.php");
           <td>
                 <a href="scan.php?did= ' . $d->did . '">Consulter</a>
           </td>';
-                    if ($participe->estConfirme == 1) {
+                    if ($participe->estConfirme == 1 && !$isSold) {
                         echo '
             <td>
                 <a href="addExp.php?gid=' . $gid . '&did=' . $d->did . '"><i class="fas fa-pen"></i></a>
@@ -198,7 +260,7 @@ include("inc/header.inc.php");
         </tr>
               ';
                     }
-                }
+                    }
                 ?>
             </table>
         </article>

@@ -43,7 +43,7 @@ include("inc/header.inc.php");
                     <section class="alertbox">
                         <h2 class="connexion-message">'.$message .'</h2>
                         <section class="help-connect">
-                            <a href="myGroups.php'. $gid .'">Revenir à l\'acceuil</a>
+                            <a href="myGroups.php">Revenir à l\'acceuil</a>
                         </section>
                         
                     </section>

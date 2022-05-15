@@ -2,7 +2,10 @@
 require_once 'PHPMailer/src/PHPMailer.php';
 require_once 'PHPMailer/src/Exception.php';
 require_once 'db_utilisateur.inc.php';
+require_once 'db_versement.inc.php';
 use Utilisateur\UtilisateurRepository;
+use Versement\VersementRepository;
+use Versement\Versement;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -24,12 +27,8 @@ function newAccountIsValid($mail,$mot_de_passe, $mdpv, &$message) {
 }
 
 function editAccountIsValid($mail, &$message) {
-    $utilisateurRepository = new UtilisateurRepository();
     if(!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
         $message = "Votre email est invalide";
-        return false;
-    } else if($utilisateurRepository->existInDB($mail, $message)) { //TODO
-        $message = "Un compte existe déjà avec cette adresse mail";
         return false;
     }
     return true;
@@ -154,4 +153,112 @@ function verifySearch($dateDeb, $dateFin, $montMin, $montMax, &$message) {
     } else {
         return true;
     }
+}
+
+function calculerVersements(array $differenceArray, array $versements)
+{
+    foreach ($differenceArray as $currentUid => $currentD) {
+        // Vérifier que la dépense courante n'est pas négative
+        if ($currentD > 0) {
+            while ($currentD != 0) {
+                $initialD = $currentD;
+                $firstNeg = getFirstNegative($differenceArray); // Récupérer la première différence négative
+                $currentD += $firstNeg[1]; // Soustraire la dépense négative à la dépense courante
+
+                // Si la soustraction donne un résultat négatif
+                if ($currentD < 0) {
+                    $prob = abs($currentD);
+                    $firstNeg[1] = $currentD;
+
+                    // Création de l'objet versement
+                    $versement = new Versement();
+                    $versement->uidVerseur = $firstNeg[0];
+                    $versement->uidBenefi = $currentUid;
+                    $versement->montant = $initialD;
+                    $versements[] = $versement;
+
+                    // Mise de la dépense courante à 0
+                    $currentD += $prob;
+
+                    // Actualiser le tableau initial
+                    actualizeFirstNeg($differenceArray, $firstNeg);
+                    actualizeCurrent($differenceArray, $currentUid, $currentD);
+
+                    // Si la soustraction ne suffit pas à mettre la dépense courante à 0
+                } else if ($currentD > 0) {
+
+                    // Création de l'objet versement
+                    $versement = new Versement();
+                    $versement->uidVerseur = $firstNeg[0];
+                    $versement->uidBenefi = $currentUid;
+                    $versement->montant = abs($firstNeg[1]);
+                    $versements[] = $versement;
+
+                    // Actualiser le tableau initial
+                    $firstNeg[1] = 0;
+                    actualizeFirstNeg($differenceArray, $firstNeg);
+                    actualizeCurrent($differenceArray, $currentUid, $currentD);
+                } else {
+                    $versement = new Versement();
+                    $versement->uidVerseur = $firstNeg[0];
+                    $versement->uidBenefi = $currentUid;
+                    $versement->montant = abs($firstNeg[1]);
+                    $versements[] = $versement;
+                }
+            }
+        }
+    }
+    return array($versements, $differenceArray);
+}
+
+function getFirstNegative($differenceArray) {
+    foreach ($differenceArray as $uid => $d) {
+        if($d < 0) {
+            return array($uid, $d);
+        }
+    }
+    return NULL;
+}
+function actualizeFirstNeg(&$differenceArray, $firstNeg) {
+    foreach ($differenceArray as $uid => $d) {
+        if($firstNeg[0] == $uid) {
+            $differenceArray[$uid] = $firstNeg[1];
+        }
+    }
+}
+function actualizeCurrent(&$differenceArray, $currentUid, $currentD) {
+    foreach ($differenceArray as $uid => $d) {
+        if($currentUid == $uid) {
+            $differenceArray[$uid] = $currentD;
+        }
+    }
+}
+
+function verifyGroupCanBeDeleted($versements) {
+    foreach ($versements as $v) {
+        if($v->estConfirme == 0) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function verifyAccountCanBeDeleted($uid, $groups, $participations) {
+    $myGroupsArray = null;
+    $versementRepository = new VersementRepository();
+
+    while ($group = $groups->fetch(PDO::FETCH_ASSOC)) {
+        foreach ($participations as $participation) {
+            if ($participation->uid == $uid && $participation->estConfirme) {
+                $v = $versementRepository->getVersementsofGid($group['gid']);
+                if(empty($v)) {
+                    return false;
+                }
+            }
+        }
+    }
+
+    return true;
+
 }

@@ -20,6 +20,13 @@ $montMax = htmlentities($_GET['montMax']);
 $dateDeb = htmlentities($_GET['dateDeb']);
 $dateFin = htmlentities($_GET['dateFin']);
 
+setcookie("search", $search, '/~e200284/');
+setcookie("montMin", $montMin, '/~e200284/');
+setcookie("montMax", $montMax, '/~e200284/');
+setcookie("dateDeb", $dateDeb, '/~e200284/');
+setcookie("dateFin", $dateFin, '/~e200284/');
+
+
 $utilisateurRepository = new UtilisateurRepository();
 
 $participerRepository = new ParticiperRepository();

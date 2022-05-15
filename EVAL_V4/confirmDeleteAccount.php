@@ -1,35 +1,34 @@
 <?php
 session_start();
 
-if(!isset($_GET['gid'])) {
+if(!isset($_SESSION['uid'])) {
     header('Location: index.php');
 }
 require_once 'php/myFct.inc.php';
-require_once 'php/db_versement.inc.php';
 require_once 'php/db_groupe.inc.php';
+require_once 'php/db_utilisateur.inc.php';
+require_once 'php/db_participe.inc.php';
 use Groupe\GroupeRepository;
-use Versement\VersementRepository;
+use Utilisateur\UtilisateurRepository;
+use Participer\ParticiperRepository;
 
-$gid = $_GET['gid'];
+$groupRepository = new GroupeRepository();
+$utilisateurRepository = new UtilisateurRepository();
+$groups = $groupRepository->showGroups();
+$participerRepository = new ParticiperRepository();
+$participations = $participerRepository->getParticipeByUserId($_SESSION['uid']);
 
-$groupeRepository = new GroupeRepository();
-$versementRepository = new VersementRepository();
-$group = $groupeRepository->showGroupById($gid);
-$versements = $versementRepository->getVersementsofGid($gid);
-$message = "";
-$isSold = !empty($versements);
-
-if($isSold) {
-    if(!verifyGroupCanBeDeleted($versements)) {
-        $message = "Tous les versements n'ont pas été confirmés";
-    }
-} else {
-    $message = "Le groupe n'a pas été soldé";
+$message ="";
+if(!verifyAccountCanBeDeleted($_SESSION['uid'], $groups, $participations)) {
+    $message = "Vous êtes dans un ou plusieurs groupe encore non soldé";
 }
+
+
 
 if(isset($_POST['oui'])) {
-    $groupeRepository->deleteGroup($gid, $message);
+    //TODO
 }
+
 if(isset($_POST['non'])) {
     header('Location: index.php');
 }
@@ -42,12 +41,12 @@ include("inc/header.inc.php");
     <section>
         <form method="post">
             <fieldset class="fieldset-box">
-                <h1>Supprimer groupe</h1>
+                <h1>Supprimer profil</h1>
 
                 <?php
                 if(empty($message)) {
                     echo '
-                <h2>Etes-vous sûr de vouloir supprimer le groupe '. $group->nom  .'?</h2>
+                <h2>Etes-vous sûr de vouloir supprimer votre profil ?</h2>
 
                 <input class="btn" type="submit" name="oui" value="Oui">
                 <input class="btn" type="submit" name="non" value="Non">
@@ -57,7 +56,7 @@ include("inc/header.inc.php");
                     <section class="alertbox">
                         <h2 class="connexion-message">'.$message .'</h2>
                         <section class="help-connect">
-                            <a href="group.php?gid='. $gid .'">Revenir au groupe</a>
+                            <a href="myGroups.php">Revenir à l\'acceuil</a>
                         </section>
                         
                     </section>

@@ -83,7 +83,7 @@ if(isset($_POST['modify'])) {
 
                 <section class="help-connect">
                     <a href="editPassword.php">Modifier mot de passe</a>
-                    <a href="#">Supprimer mon compte</a>
+                    <a href="confirmDeleteAccount.php">Supprimer mon profil</a>
                 </section>
             </fieldset>
         </form>

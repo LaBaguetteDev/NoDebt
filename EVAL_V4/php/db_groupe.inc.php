@@ -95,4 +95,22 @@ class GroupeRepository {
         DBLink::disconnect($bdd);
         return $noError;
     }
+
+    public function deleteGroup($gid, &$message) {
+        $noError = false;
+        $bdd = null;
+        try {
+            $bdd = DBLink::connect2db(MYDB, $message);
+            $stmt = $bdd->prepare("DELETE FROM " . self::TABLE_NAME . " WHERE  gid=:gid");
+            $stmt->bindValue(':gid', $gid);
+            if ($stmt->execute() && $stmt->rowCount() > 0) {
+                $message = "Le groupe a bien été supprimé";
+                $noError = true;
+            }
+        } catch (Exception $e) {
+            $message .= $e->getMessage() . '<br>';
+        }
+        DBLink::disconnect($bdd);
+        return $noError;
+    }
 }
