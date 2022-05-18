@@ -133,7 +133,7 @@ class DepenseRepository {
 
         try {
             $bdd = DBLink::connect2db(MYDB, $message);
-            $stmt = $bdd->prepare("SELECT * FROM ".self::TABLE_NAME." WHERE gid = :gid LIMIT 3");
+            $stmt = $bdd->prepare("SELECT * FROM ".self::TABLE_NAME." WHERE gid = :gid ORDER BY date DESC LIMIT 3");
             $stmt->bindValue(':gid', $gid);
             if ($stmt->execute()){
                 $result = $stmt->fetchAll(PDO::FETCH_CLASS, "Depense\Depense");

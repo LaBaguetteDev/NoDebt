@@ -1,5 +1,11 @@
 <?php
-
+session_start();
+if(!isset($_SESSION['uid'])) {
+    header('Location: index.php');
+}
+if(!empty($_POST['securite'])) {
+    header('Location: index.php&message=1');
+}
 require_once 'php/db_groupe.inc.php';
 require_once 'php/db_participe.inc.php';
 
@@ -8,10 +14,6 @@ use Groupe\GroupeRepository;
 use Participer\Participer;
 use Participer\ParticiperRepository;
 
-session_start();
-if(!isset($_SESSION['uid'])) {
-    header('Location: index.php');
-}
 $message = "";
 $nom = '';
 $devise = '';
@@ -25,7 +27,7 @@ if(isset($_POST['submitBtn'])) {
 
     if(empty($_POST['groupName']) || empty($_POST['devise'])) {
         $message = "Un champ est manquant";
-    } else if(strcmp($_POST['devise'], 'euro') !== 0 || strcmp($_POST['devise'], 'dollar') !== 0) {
+    } else if(strcmp($_POST['devise'], 'euro') !== 0 && strcmp($_POST['devise'], 'dollar') !== 0) {
         $message = "Devise invalide";
     } else {
         $groupe = new Groupe();
@@ -79,6 +81,7 @@ include("inc/header.inc.php");
                 </section>
 
                 <input class="btn" type="submit" name="submitBtn" value="Confirmer">
+                <label class="securite"><span></span><input type="text" name="securite" value=""/></label>
             </fieldset>
         </form>
     </section>

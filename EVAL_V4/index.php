@@ -3,24 +3,36 @@ session_start();
 $titre = 'Connexion';
 include("inc/header.inc.php");
 require 'php/db_utilisateur.inc.php';
+require_once 'php/myFct.inc.php';
 
 use Utilisateur\UtilisateurRepository;
 
 $message = "";
 $utilisateurRepository = new UtilisateurRepository();
 
+$valid = true;
+if(!empty($_POST['securite']) || isset($_GET['message'])) {
+    session_start();
+    session_destroy();
+    $message = "Une erreur est survenue";
+    $valid = false;
+}
+
 if(isset($_SESSION['uid'])) {
     header('Location: myGroups.php');
 }
 
-if(isset($_POST['submitBtn'])) {
+if(isset($_POST['submitBtn']) && $valid) {
     $courriel = htmlentities($_POST['courriel']);
     $mdp = htmlentities($_POST['password']);
     $data = array($courriel, $mdp);
 
     $utilisateur = $utilisateurRepository->getUtilisateurByData($courriel, $message);
     $hashedPass = hash('sha256', $mdp);
-    if($utilisateur !== false && strcmp($hashedPass, $utilisateur->motPasse) == 0) {
+    if($utilisateur !== false && strcmp($hashedPass, $utilisateur->motPasse) == 0 && $utilisateur->estActif == 0) {
+        envoiMailReactiverCompte($utilisateur->courriel, $utilisateur->uid, $message);
+        $message = "Votre compte a été désactivé, pour le réactiver, cliquez sur le lien dans le mail qui vient de vous être envoyé";
+    } else if($utilisateur !== false && strcmp($hashedPass, $utilisateur->motPasse) == 0) {
         $_SESSION['prenom'] = $utilisateur->prenom;
         $_SESSION['nom'] = $utilisateur->nom;
         $_SESSION['uid'] = $utilisateur->uid;
@@ -65,6 +77,7 @@ if(isset($_POST['submitBtn'])) {
                     <a href="register.php">Créer un compte</a>
                     <a href="forgotPass.php">Mot de passe oublié</a>
                 </section>
+                <label class="securite"><span></span><input type="text" name="securite" value=""/></label>
             </fieldset>
         </form>
     </section>

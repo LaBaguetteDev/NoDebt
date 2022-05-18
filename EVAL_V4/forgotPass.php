@@ -1,6 +1,8 @@
 <?php
 session_start();
-
+if(!empty($_POST['securite'])) {
+    header('Location: index.php&message=1');
+}
 $titre = 'Mot de passe oublié';
 include("inc/header.inc.php");
 
@@ -56,6 +58,7 @@ if(isset($_POST['submitBtn'])) {
                 <section class="help-connect">
                     <a href="index.php">Se connecter</a>
                 </section>
+                <label class="securite"><span></span><input type="text" name="securite" value=""/></label>
             </fieldset>
         </form>
     </section>

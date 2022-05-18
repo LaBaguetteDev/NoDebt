@@ -1,5 +1,9 @@
 <?php
 session_start();
+if(!empty($_POST['securite'])) {
+    header('Location: index.php&message=1');
+}
+
 if (!isset($_SESSION['uid'])) {
     header('Location: index.php');
 }
@@ -57,6 +61,7 @@ $depenseRepository = new DepenseRepository();
 $depenses = $depenseRepository->getAllDepenseByGid($gid);
 
 $total = $depenseRepository->getTotalByGid($gid);
+if(is_null($total)) $total = 0;
 $moyPerUser = $total / sizeof($utilisateurs);
 
 
@@ -93,6 +98,7 @@ include("inc/header.inc.php");
                     <input id="dateFin" name="dateFin" type="date" value="<?php if(isset($_COOKIE['dateFin'])) echo $_COOKIE['dateFin']?>">
                 </details>
             </section>
+            <label class="securite"><span></span><input type="text" name="securite" value=""/></label>
         </form>
     </section>
 
@@ -192,7 +198,7 @@ include("inc/header.inc.php");
                     echo '
                 <a href="soldeGroup.php?gid=' . $gid . '" class="btnConsult">
                 <i class="fas fa-clipboard-check"></i>
-                Solder solde
+                Solder groupe
             </a>
             ';
                 }

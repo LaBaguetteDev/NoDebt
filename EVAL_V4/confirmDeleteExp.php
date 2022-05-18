@@ -4,6 +4,12 @@ session_start();
 if(!isset($_GET['did'])) {
     header('Location: index.php');
 }
+if(!isset($_SESSION['uid'])) {
+    header('Location: index.php');
+}
+if(!empty($_POST['securite'])) {
+    header('Location: index.php&message=1');
+}
 require_once 'php/db_depense.inc.php';
 use Depense\DepenseRepository;
 
@@ -49,6 +55,7 @@ include("inc/header.inc.php");
                     ';
                 }
                 ?>
+                <label class="securite"><span></span><input type="text" name="securite" value=""/></label>
             </fieldset>
 
         </form>

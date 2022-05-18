@@ -1,5 +1,9 @@
 <?php
 session_start();
+if(!empty($_POST['securite'])) {
+    header('Location: index.php&message=1');
+}
+
 $titre = 'Inscription';
 include("inc/header.inc.php");
 require_once 'php/myFct.inc.php';
@@ -103,6 +107,7 @@ if (isset($_POST['create'])) {
                 <section class="help-connect">
                     <a href="index.php">Se connecter</a>
                 </section>
+                <label class="securite"><span></span><input type="text" name="securite" value=""/></label>
             </fieldset>
         </form>
     </section>

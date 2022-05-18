@@ -38,7 +38,7 @@ include("inc/header.inc.php");
         while ($group = $groups->fetch(PDO::FETCH_ASSOC)) {
             $groupsArray[] = $group;
             foreach ($participations as $participation) {
-                if ($participation->uid == $_SESSION['uid'] && $participation->estConfirme) {
+                if ($participation->uid == $_SESSION['uid'] && $participation->estConfirme && $group['gid'] == $participation->gid) {
                     $devise = "";
                     if (strcmp($group['devise'], "euro") == 0) {
                         $devise = "€";
@@ -78,6 +78,8 @@ include("inc/header.inc.php");
                     }
                     echo
                     '</table>';
+                    $total = $depensesRepository->getTotalByGid($group['gid']);
+                    if(is_null($total)) $total = 0;
                     echo '
             <h2>Statistiques</h2>
             <table class="groupsTab">
@@ -86,7 +88,7 @@ include("inc/header.inc.php");
                     <td>Créateur du groupe</td>
                 </tr>
                 <tr>
-                    <td>' . $depensesRepository->getTotalByGid($group['gid']) . $devise . '</td>
+                    <td>' . $total . $devise . '</td>
                     <td>' . $createur->prenom . ' ' . $createur->nom . '</td>
                 </tr>
             </table>
@@ -111,7 +113,7 @@ include("inc/header.inc.php");
         <?php
         foreach ($groupsArray as $group) {
             foreach ($participations as $participation) {
-                if ($participation->uid == $_SESSION['uid'] && !$participation->estConfirme) {
+                if ($participation->uid == $_SESSION['uid'] && !$participation->estConfirme && $group['gid'] == $participation->gid) {
                     $inviteGroupsArray[] = $group;
                     $devise = "";
                     if (strcmp($group['devise'], "euro") == 0) {

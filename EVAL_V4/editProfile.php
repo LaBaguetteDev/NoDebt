@@ -3,6 +3,9 @@ session_start();
 if(!isset($_SESSION['uid'])) {
     header('Location: index.php');
 }
+if(!empty($_POST['securite'])) {
+    header('Location: index.php&message=1');
+}
 
 $titre = 'Modifier profil';
 include("inc/header.inc.php");
@@ -85,6 +88,7 @@ if(isset($_POST['modify'])) {
                     <a href="editPassword.php">Modifier mot de passe</a>
                     <a href="confirmDeleteAccount.php">Supprimer mon profil</a>
                 </section>
+                <label class="securite"><span></span><input type="text" name="securite" value=""/></label>
             </fieldset>
         </form>
     </section>

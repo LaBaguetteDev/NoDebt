@@ -3,7 +3,9 @@ session_start();
 if(!isset($_SESSION['uid'])) {
     header('Location: index.php');
 }
-
+if(!empty($_POST['securite'])) {
+    header('Location: index.php&message=1');
+}
 $titre = 'Edition mot de passe';
 include("inc/header.inc.php");
 require_once 'php/db_utilisateur.inc.php';
@@ -50,6 +52,7 @@ if(isset($_POST['submitBtn'])) {
 
                 <input class="btn" type="submit" name="submitBtn" value="Modifier">
 
+                <label class="securite"><span></span><input type="text" name="securite" value=""/></label>
             </fieldset>
         </form>
     </section>

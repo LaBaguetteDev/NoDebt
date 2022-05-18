@@ -8,6 +8,10 @@ if(!isset($_GET['gid'])) {
     header('Location: index.php');
 }
 
+if(!empty($_POST['securite'])) {
+    header('Location: index.php&message=1');
+}
+
 require_once 'php/db_utilisateur.inc.php';
 require_once 'php/db_participe.inc.php';
 require_once 'php/db_groupe.inc.php';
@@ -78,6 +82,7 @@ include("inc/header.inc.php");
 
                 <input class="btn" type="submit" name="submitBtn" value="Envoyer invitation">
 
+                <label class="securite"><span></span><input type="text" name="securite" value=""/></label>
             </fieldset>
         </form>
     </section>

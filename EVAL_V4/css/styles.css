@@ -85,6 +85,10 @@ Page de connexion/inscription/ect.
     border: 0;
 }
 
+.securite {
+    display: none;
+}
+
 .form-scan {
     display: flex;
     justify-content: center;

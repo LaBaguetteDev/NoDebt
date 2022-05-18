@@ -106,6 +106,38 @@ function envoiMailInvitation($emailInvite, $emailInviteur, $groupName, &$message
     }
 }
 
+function envoiMailCompteDesactive($email, &$message) {
+    try {
+        $mail = new PHPMailer(true);
+        $mail->CharSet = 'UTF-8';
+        $mail->setFrom('contact@nodebt.com');
+        $mail->addAddress($email);
+        $mail->addReplyTo("no-reply@nodebt.com");
+        $mail->isHTML(false);
+        $mail->Subject = "NoDebt - Votre compte a été désactivé";
+        $mail->Body = "Votre compte NoDebt a bien été désactivé. Vous pouvez, si vous le souhaitez, réactiver votre compte en vous connectant de nouveau à NoDebt";
+        $mail->send();
+    } catch (Exception $ex) {
+        $message = "Une erreur est survenue lors de l'envoi du message : " . $mail->ErrorInfo;
+    }
+}
+
+function envoiMailReactiverCompte($email, $uid, &$message) {
+    try {
+        $mail = new PHPMailer(true);
+        $mail->CharSet = 'UTF-8';
+        $mail->setFrom('contact@nodebt.com');
+        $mail->addAddress($email);
+        $mail->addReplyTo("no-reply@nodebt.com");
+        $mail->isHTML(false);
+        $mail->Subject = "NoDebt - Réactivez votre compte";
+        $mail->Body = "Votre compte NoDebt est désactivé, pour le réactiver, merci de cliquer sur ce lien : http://192.168.128.13/~e200284/EVAL_V4/reactivate.php?uid=$uid";
+        $mail->send();
+    } catch (Exception $ex) {
+        $message = "Une erreur est survenue lors de l'envoi du message : " . $mail->ErrorInfo;
+    }
+}
+
 function verifierParticipeDeja($participerRepository, $uid, $gid) {
     $participes = $participerRepository->getParticipeByUserId($uid);
 
@@ -144,10 +176,10 @@ function verifySearch($dateDeb, $dateFin, $montMin, $montMax, &$message) {
     } else if(intval($montMin) > intval($montMax)) {
         $message = "Le montant maximum est inférieur au montant minimum.";
         return false;
-    } else if(!is_numeric($montMin) || !is_numeric($montMax)) {
+    } else if((!empty($montMin) || !empty($montMax)) && (!is_numeric($montMin) || !is_numeric($montMax))) {
         $message = "Le montant est invalide";
         return false;
-    } else if(!preg_match($regexDate, $dateDeb) || !preg_match($regexDate, $dateFin)) {
+    } else if((!empty($dateDeb) || !empty($dateFin)) && (!preg_match($regexDate, $dateDeb) || !preg_match($regexDate, $dateFin))) {
         $message = "La date est invalide";
         return false;
     } else {

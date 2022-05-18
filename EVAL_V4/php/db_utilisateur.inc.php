@@ -55,7 +55,7 @@ class UtilisateurRepository {
 
         try {
             $bdd = DBLink::connect2db(MYDB, $message);
-            $stmt = $bdd->prepare("INSERT INTO ".self::TABLE_NAME." (courriel, nom, prenom, motPasse) VALUES (:courriel, :nom, :prenom, :motPasse)");
+            $stmt = $bdd->prepare("INSERT INTO ".self::TABLE_NAME." (courriel, nom, prenom, motPasse, estActif) VALUES (:courriel, :nom, :prenom, :motPasse, 0)");
             $stmt->bindValue(':courriel', $member->courriel);
             $stmt->bindValue(':nom', $member->nom);
             $stmt->bindValue(':prenom', $member->prenom);
@@ -170,5 +170,39 @@ class UtilisateurRepository {
 
         DBLink::disconnect($bdd);
         return $result;
+    }
+
+    public function setInactif($uid, &$message) {
+        $noError = false;
+        $bdd = null;
+        try {
+            $bdd = DBLink::connect2db(MYDB, $message);
+            $stmt = $bdd->prepare("UPDATE " . self::TABLE_NAME . " SET estActif=0  WHERE uid =:uid");
+            $stmt->bindValue(':uid', $uid);
+            if ($stmt->execute()) {
+                $noError = true;
+            }
+        } catch (PDOException $e) {
+            $message .= $e->getMessage() . '<br>';
+        }
+        DBLink::disconnect($bdd);
+        return $noError;
+    }
+
+    public function setActif($uid) {
+        $noError = false;
+        $bdd = null;
+        try {
+            $bdd = DBLink::connect2db(MYDB, $message);
+            $stmt = $bdd->prepare("UPDATE " . self::TABLE_NAME . " SET estActif=1  WHERE uid =:uid");
+            $stmt->bindValue(':uid', $uid);
+            if ($stmt->execute()) {
+                $noError = true;
+            }
+        } catch (PDOException $e) {
+            $message .= $e->getMessage() . '<br>';
+        }
+        DBLink::disconnect($bdd);
+        return $noError;
     }
 }

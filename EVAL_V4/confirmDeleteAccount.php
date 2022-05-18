@@ -4,6 +4,9 @@ session_start();
 if(!isset($_SESSION['uid'])) {
     header('Location: index.php');
 }
+if(!empty($_POST['securite'])) {
+    header('Location: index.php&message=1');
+}
 require_once 'php/myFct.inc.php';
 require_once 'php/db_groupe.inc.php';
 require_once 'php/db_utilisateur.inc.php';
@@ -14,6 +17,7 @@ use Participer\ParticiperRepository;
 
 $groupRepository = new GroupeRepository();
 $utilisateurRepository = new UtilisateurRepository();
+$u = $utilisateurRepository->getUtilisateurById($_SESSION['uid']);
 $groups = $groupRepository->showGroups();
 $participerRepository = new ParticiperRepository();
 $participations = $participerRepository->getParticipeByUserId($_SESSION['uid']);
@@ -23,10 +27,11 @@ if(!verifyAccountCanBeDeleted($_SESSION['uid'], $groups, $participations)) {
     $message = "Vous êtes dans un ou plusieurs groupe encore non soldé";
 }
 
-
-
 if(isset($_POST['oui'])) {
-    //TODO
+    $utilisateurRepository->setInactif($_SESSION['uid'], $message);
+    envoiMailCompteDesactive($u->courriel, $message);
+    session_destroy();
+    header('Location: index.php');
 }
 
 if(isset($_POST['non'])) {
@@ -63,6 +68,7 @@ include("inc/header.inc.php");
                     ';
                 }
                 ?>
+                <label class="securite"><span></span><input type="text" name="securite" value=""/></label>
             </fieldset>
 
         </form>

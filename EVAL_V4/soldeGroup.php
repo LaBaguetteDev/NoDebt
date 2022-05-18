@@ -7,6 +7,9 @@ if (!isset($_SESSION['uid'])) {
 if (!isset($_GET['gid'])) {
     header('Location: index.php');
 }
+if(!empty($_POST['securite'])) {
+    header('Location: index.php&message=1');
+}
 require_once 'php/db_depense.inc.php';
 require_once 'php/db_utilisateur.inc.php';
 require_once 'php/db_groupe.inc.php';
@@ -64,9 +67,9 @@ foreach ($utilisateurs as $u) {
     $uidArray[] = $u->uid;
 }
 
-if(empty($depenses)) {
+if (empty($depenses)) {
     $message = "Il n'y a aucune dépense pour ce groupe";
-} else if(sizeof($utilisateurs) == 1) {
+} else if (sizeof($utilisateurs) == 1) {
     $message = "Il n'y a qu'un seul utilisateur dans ce groupe";
 } else {
     $versements = array();
@@ -91,58 +94,58 @@ include("inc/header.inc.php");
 <main class="groupsMain">
     <h1>Solder groupe</h1>
     <section>
-        <article class="groupsSection">
-            <h2>Versements à effectuer</h2>
-            <?php
-            if (!empty($message)) {
-                echo '
+
+        <form method="post">
+            <fieldset class="fieldset-box">
+                <h2>Versements à effectuer</h2>
+                <?php
+                if (!empty($message)) {
+                    echo '
                     <section class="alertbox">
                         <h2 class="connexion-message">' . $message . '</h2>
                         <section class="help-connect">
-                            <a href="group.php?gid='. $gid .'">Revenir au groupe</a>
+                            <a href="group.php?gid=' . $gid . '">Revenir au groupe</a>
                         </section>
                     </section>
                     ';
-            }
-            ?>
-            <table class="groupsTab">
+                }
+                ?>
+                <?php
+                if (isset($versements)) {
+                    echo '
+                        <table class="groupsTab">
                 <tr>
                     <td>Verseur</td>
                     <td>Bénéficiaire</td>
                     <td>Montant</td>
-                </tr>
+                </tr>';
+                    foreach ($versements as $v) {
 
-                <?php
-                foreach ($versements as $v) {
-
-                    $verseur = $utilisateurRepository->getUtilisateurById($v->uidVerseur);
-                    $benefi = $utilisateurRepository->getUtilisateurById($v->uidBenefi);
-
-                    echo '
+                        $verseur = $utilisateurRepository->getUtilisateurById($v->uidVerseur);
+                        $benefi = $utilisateurRepository->getUtilisateurById($v->uidBenefi);
+                        echo '    
                     <tr>
                         <td>' . $verseur->nom . ' ' . $verseur->prenom . '</td>
                         <td>' . $benefi->nom . ' ' . $benefi->prenom . '</td>
                         <td>' . $v->montant . $devise . '</td>
                     </tr>
                     ';
+                    }
+                    echo '</table>';
                 }
                 ?>
 
 
-            </table>
-
-            <?php
-            if (empty($message)) {
-                echo '
-        <form method="post">
-            <fieldset class="fieldset-box">
+                <?php
+                if (empty($message)) {
+                    echo '
                 <input class="btn" type="submit" name="oui" value="Confirmer solde">
                 <input class="btn" type="submit" name="non" value="Annuler">
+                    ';
+                }
+                ?>
+                <label class="securite"><span></span><input type="text" name="securite" value=""/></label>
             </fieldset>
         </form>
-                    ';
-            }
-            ?>
-        </article>
     </section>
 </main>

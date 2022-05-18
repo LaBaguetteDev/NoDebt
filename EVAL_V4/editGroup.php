@@ -3,6 +3,9 @@ session_start();
 if (!isset($_SESSION['uid']) || !isset($_GET['gid'])) {
     header('Location: index.php');
 }
+if(!empty($_POST['securite'])) {
+    header('Location: index.php&message=1');
+}
 
 require_once 'php/db_groupe.inc.php';
 
@@ -68,6 +71,7 @@ include("inc/header.inc.php");
                 </section>
 
                 <input class="btn" type="submit" name="submitBtn" value="Confirmer">
+                <label class="securite"><span></span><input type="text" name="securite" value=""/></label>
             </fieldset>
         </form>
     </section>
